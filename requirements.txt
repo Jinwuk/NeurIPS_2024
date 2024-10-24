@@ -1,4 +1,5 @@
 deep-translator
+tqdm
 keyboard
 json
 argparse 
