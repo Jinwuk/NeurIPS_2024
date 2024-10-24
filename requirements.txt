@@ -1,0 +1,5 @@
+deep-translator
+keyboard
+json
+argparse 
+textwrap
