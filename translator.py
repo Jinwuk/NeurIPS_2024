@@ -25,6 +25,7 @@ Translated
 
 from paper_analysis import neurips_paper
 import os
+import re
 import argparse, textwrap
 import my_debug as DBG
 def ArgumentParse(L_Param, _intro_msg=_description, bUseParam=False):
@@ -39,12 +40,12 @@ def ArgumentParse(L_Param, _intro_msg=_description, bUseParam=False):
                         type=str, default='kor')
     parser.add_argument('-sr', '--sour_lang', help="Source Language (Default : 'eng')",
                         type=str, default='eng')
-    parser.add_argument('-qt', '--quite_mode', help="Quite Mode (Default : 0)",
-                        type=int, default=0)
+    parser.add_argument('-qt', '--quite_mode', action='store_true', help="Quite Mode (Default : 0)",
+                        default=False)
 
     args = parser.parse_args(L_Param) if bUseParam else parser.parse_args()
 
-    args.quite_mode    = True if args.quite_mode == 1 else False
+    #args.quite_mode    = True if args.quite_mode == 1 else False
     print(_intro_msg)
     return args
 
@@ -74,8 +75,15 @@ class translation_app:
         with open(self.outfile, 'w', encoding='utf-8') as _file:
              _file.write(_contents)
 
+    def pre_processing(self, source_str, _active=True):
+        _proc_str_1     = re.sub(r"\n", " ", source_str)
+        _proc_str_2     = _proc_str_1.replace(". ", ".\n")
+        d_source_str    = {'abstract': _proc_str_2}
+        return d_source_str
+
     def __call__(self, *args, **kwargs):
-        d_source_str    = {'abstract': self.get_source()}
+        _source_str     = self.get_source()
+        d_source_str    = self.pre_processing(source_str=_source_str)
         _result_str     = self.trans_func(_dictionary=d_source_str, _active=True)
         self.put_result(_result_str)
 

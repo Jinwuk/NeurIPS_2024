@@ -1,0 +1,8 @@
+# Folder
+.idea
+__pycache__
+
+# File
+paper_summary.txt
+source.txt
+translation.txt
