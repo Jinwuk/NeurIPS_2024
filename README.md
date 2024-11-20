@@ -42,3 +42,22 @@ options:
 이 프로그램을 발전시켜 다수의 논문에 대하여 TXT 파일을 만드는 법에 대하여 업그레드를 수행하겠음
 프로그램은 차후 Github에 올리겠음
 
+## predatory_j.py
+부실 학회지 여부를 검색하여 알려주는 프로그램
+
+### 사용법
+간단히 -jn (journal Name) 을 다음과 같이 입력해주면 검색하여 찾아준다.
+~~~
+python predatory_j.py -jn "Electronics"
+~~~
+
+## translator.py
+source.txt에 영문을 복사하여 입력하면 이를 읽어서 국문으로 번역해주는 프로그램 
+
+### 사용법
+~~~
+python translator.py   
+~~~
+
+### Trouble
+현재, Argument의 경우 서로 다른 

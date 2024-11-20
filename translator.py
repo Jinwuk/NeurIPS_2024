@@ -5,7 +5,7 @@
 # Working Directory : C:\Users\Admin\OneDrive\문서\Document\[001]_Reserach자료\[01] My_Research\[01_01] MyPapers\2024\Neurips_python_work
 # 2024 10 24 by Jinwuk Seok
 ###########################################################################
-_description = '''\
+t_description = '''\
 ====================================================
 translator.py : Translation Test
                     Written by Jinwuk @ 2022-01-11
@@ -28,9 +28,10 @@ import os
 import re
 import argparse, textwrap
 import my_debug as DBG
-def ArgumentParse(L_Param, _intro_msg=_description, bUseParam=False):
+'''
+def ArgumentParse(L_Param, _prog='translator.py', _intro_msg=_description, bUseParam=False):
     parser = argparse.ArgumentParser(
-        prog='paper_analysis.py',
+        prog=_prog,
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(_intro_msg))
 
@@ -45,14 +46,15 @@ def ArgumentParse(L_Param, _intro_msg=_description, bUseParam=False):
 
     args = parser.parse_args(L_Param) if bUseParam else parser.parse_args()
 
-    #args.quite_mode    = True if args.quite_mode == 1 else False
     print(_intro_msg)
     return args
-
+'''
+import Interface_function as IF
 class translation_app:
     def __init__(self, L_Param, bUseParam=False):
-        _app_class  = neurips_paper()
-        self.args   = ArgumentParse(L_Param=L_Param, bUseParam=bUseParam)
+        ArgumentParse = IF.ArgumentParse
+        self.args   = ArgumentParse(L_Param=L_Param, _prog='translator.py', _intro_msg=t_description, bUseParam=bUseParam)
+        _app_class = neurips_paper()
         # ----------------------------------------------------------------
         # Path and File
         #----------------------------------------------------------------

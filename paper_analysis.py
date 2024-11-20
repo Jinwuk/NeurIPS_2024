@@ -18,31 +18,35 @@ from tqdm import tqdm
 import json
 import os
 import re
-import argparse, textwrap
+#import argparse, textwrap
 import my_debug as DBG
 
-def ArgumentParse(L_Param, _intro_msg=_description, bUseParam=False):
+'''
+def ArgumentParse(L_Param, _prog, _intro_msg=_description, bUseParam=False):
     parser = argparse.ArgumentParser(
-        prog='paper_analysis.py',
+        prog=_prog,
         formatter_class=argparse.RawDescriptionHelpFormatter,
         description=textwrap.dedent(_intro_msg))
 
     parser.add_argument('-pn', '--paper_name', help="(Partial) Paper Name",
                         type=str, default='')
-    parser.add_argument('-tr', '--translation', help="[0(Default)] No translation [1] Translation (eng->kor)",
-                        type=int, default=0)
-    parser.add_argument('-m', '--manual_op', help="[0] No manual operation [1(Default)] manual operation",
-                        type=int, default=1)
+    parser.add_argument('-tr', '--translation', help="Translation (eng->kor) [Default : Use]",
+                        action='store_false')
+    parser.add_argument('-m', '--manual_op', help="manual operation [Default : Not Use]",
+                        action='store_true')
+    parser.add_argument('-a', '--append_mode', help="Append paper_summary.txt or not [Default : Not Use]",
+                        action='store_true')
 
     if bUseParam:
         args = parser.parse_args(L_Param)
     else:
         args = parser.parse_args()
 
-    args.translation    = True if args.translation == 1 else False
-    args.manual_op      = True if args.manual_op == 1 else False
+    #args.manual_op      = True if args.manual_op == 1 else False
     print(_intro_msg)
     return args
+'''
+import Interface_function as IF
 
 class   neurips_paper:
     def __init__(self, _work_file='neurips_2024_papers.json'):
@@ -56,7 +60,8 @@ class   neurips_paper:
         # ----------------------------------------------------------------
         # Paeameters
         #----------------------------------------------------------------
-        self.args       = ArgumentParse(L_Param=[])
+        ArgumentParse = IF.ArgumentParse
+        self.args       = ArgumentParse(L_Param=[], _prog='paper_analysis.py', _intro_msg=_description)
         with open(self.work_fullpath, 'r', encoding='utf-8') as file:
             self.data_dict = json.load(file)        #'count', 'next', 'previous' 'results'
         self.data_results  = self.data_dict['results']
@@ -159,6 +164,24 @@ class   neurips_paper:
 
         return l_result_str, l_abstract
 
+    def write_summary_to_file(self, _file, l_result_str, l_abstract):
+        for _data in l_result_str:
+            _file.write(_data)
+        if self.args.translation:
+            for _data in l_abstract:
+                _file.write(_data)
+        else:
+            pass
+
+    def print_summary_on_console(self, l_result_str, l_abstract):
+        for _value in l_result_str:
+            print(_value, end='')
+        if self.args.translation:
+            for _value in l_abstract:
+                print(_value, end='')
+        else:
+            pass
+
     def manual_processing(self, _active=True):
         if _active:
             _process_go = True
@@ -167,22 +190,11 @@ class   neurips_paper:
                 # Processing
                 l_result_str, l_abstract = self.core_processing(_index=_index)
                 # write out summary file
-                with open(self.outfile, 'w', encoding='utf-8') as _file:
-                    for _data in l_result_str:
-                        _file.write(_data)
-                    if self.args.translation:
-                        for _data in l_abstract:
-                            _file.write(_data)
-                    else:
-                        pass
+                _key_action = 'a' if self.args.append_mode else 'w'
+                with open(self.outfile, _key_action, encoding='utf-8') as _file:
+                    self.write_summary_to_file(_file=_file, l_result_str=l_result_str, l_abstract=l_abstract)
                 # print out
-                for _value in l_result_str:
-                    print(_value, end='')
-                if self.args.translation:
-                    for _value in l_abstract:
-                        print(_value, end='')
-                else:
-                    pass
+                self.print_summary_on_console(l_result_str=l_result_str, l_abstract=l_abstract)
 
                 if keyboard.is_pressed('esc'):
                     print("ESC pressed Exit Program")

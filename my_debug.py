@@ -6,6 +6,7 @@
 import inspect
 import sys
 import os
+import textwrap
 # If you want to represent debug message, set the "_active" to be True
 def dbg(*msg, _active=True):
     if _active :
@@ -26,4 +27,8 @@ def dbg(*msg, _active=True):
         print("[<%s> %s : %d]" %(_file, _func_name, _line_no), _str, file = sys.stderr)
     else:
         pass
-
+def lprint(*msg, _active=True):
+    if _active:
+        _msg = textwrap.dedent(*msg)
+        print(_msg)
+    else: pass

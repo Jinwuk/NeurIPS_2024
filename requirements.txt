@@ -4,3 +4,4 @@ keyboard
 json
 argparse 
 textwrap
+openpyxl
