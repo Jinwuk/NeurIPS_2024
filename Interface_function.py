@@ -27,7 +27,7 @@ def ArgumentParse(L_Param, _prog, _intro_msg=_description, bUseParam=False):
                         action='store_true')
     parser.add_argument('-a', '--append_mode', help="[Paper Analysis] Append paper_summary.txt or not [Default : Not Use]",
                         action='store_true')
-    parser.add_argument('-f', '--input_file', help="[Translator]Input File (txt)",
+    parser.add_argument('-f', '--input_file', help="[Translator (txt) and pdf2html (pdf)] Input File (txt or pdf)",
                         type=str, default='source.txt')
     parser.add_argument('-dt', '--dest_lang', help="[Translator] Destination Language (Default : 'kor')",
                         type=str, default='kor')
@@ -37,6 +37,8 @@ def ArgumentParse(L_Param, _prog, _intro_msg=_description, bUseParam=False):
                         default=False)
     parser.add_argument('-jn', '--journal_name', help="[predatory] (Partial) Journal Name",
                         type=str, default='')
+    parser.add_argument('-op', '--operation_mode', help="[pdf2html] operation mode [0] pdf2html [1] pdf2txt",
+                        type=int, default=0)
 
     args = parser.parse_args(L_Param) if bUseParam else parser.parse_args()
 

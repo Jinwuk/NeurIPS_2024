@@ -1,7 +1,7 @@
 # Folder
 .idea
 __pycache__
-
+output
 # File
 paper_summary.txt
 source.txt
